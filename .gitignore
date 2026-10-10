@@ -1,0 +1,13 @@
+# Local assistant records
+/.workbuddy/
+
+# Android build caches and machine-specific configuration
+**/.gradle/
+**/build/
+**/local.properties
+**/.idea/
+*.iml
+
+# Operating system metadata
+.DS_Store
+Thumbs.db

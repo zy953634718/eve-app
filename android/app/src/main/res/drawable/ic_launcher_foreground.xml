@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 矢量占位图标：冷蓝光晕圆点，呼应伊娃「发光即情绪」的交互语言 -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- 外层光晕 -->
+    <path
+        android:pathData="M54,54 m-30,0 a30,30 0 1,1 60,0 a30,30 0 1,1 -60,0"
+        android:fillColor="#333FA9FF" />
+    <!-- 中层光晕 -->
+    <path
+        android:pathData="M54,54 m-22,0 a22,22 0 1,1 44,0 a22,22 0 1,1 -44,0"
+        android:fillColor="#667FD8FF" />
+    <!-- 本体 -->
+    <path
+        android:pathData="M54,54 m-14,0 a14,14 0 1,1 28,0 a14,14 0 1,1 -28,0"
+        android:fillColor="#FFFFFF" />
+    <!-- 高光 -->
+    <path
+        android:pathData="M48,47 m-4,0 a4,4 0 1,1 8,0 a4,4 0 1,1 -8,0"
+        android:fillColor="#CCEEFFFF" />
+</vector>

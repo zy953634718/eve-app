@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 自适应图标：
+     主体（伊娃 + 青色光环 + 星云）放在 foreground —— 系统保证 foreground 的安全区
+     （中央 72dp / 共 108dp）永不被裁，主体已控制在画布中心约 66% 以内。
+     background 用同色系纯色兜底，避免个别启动器额外裁切/缩放 background 时露底。 -->
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@color/ic_launcher_background" />
+    <foreground android:drawable="@mipmap/ic_launcher_foreground" />
+</adaptive-icon>

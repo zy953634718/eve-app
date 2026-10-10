@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- M1 最小工程用系统主题即可，不引入 Material 库依赖 -->
+    <style name="Theme.EvePet" parent="android:Theme.Material.Light.NoActionBar" />
+</resources>

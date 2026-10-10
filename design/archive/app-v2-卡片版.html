@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>伊娃 · EVE 陪伴 App 设计稿</title>
+<style>
+  :root{
+    --bg:#05080E;
+    --bg2:#0A0F18;
+    --surface:#141B26;
+    --surface2:#1C2533;
+    --line:rgba(255,255,255,.09);
+    --blue:#3EC8FF;
+    --blue2:#1E9BE0;
+    --cyan:#7FE0FF;
+    --deep:#1B6FE8;
+    --pearl:#EFF5FB;
+    --text:#EFF5FB;
+    --dim:#8B99AE;
+    --dim2:#5A687D;
+    --green:#3DDC84;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    background:
+      radial-gradient(1200px 720px at 12% -6%, rgba(62,200,255,.13), transparent 62%),
+      radial-gradient(1000px 620px at 96% 6%, rgba(27,111,232,.12), transparent 62%),
+      var(--bg);
+    color:var(--text);
+    font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",-apple-system,sans-serif;
+    min-height:100vh;
+    padding:56px 40px 96px;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- 顶部品牌区 ---------- */
+  .masthead{max-width:1560px;margin:0 auto 64px;}
+  .kicker{
+    font-size:13px;letter-spacing:.22em;color:var(--blue);
+    font-weight:700;text-transform:uppercase;margin-bottom:18px;
+  }
+  .brandrow{display:flex;align-items:center;gap:28px;flex-wrap:wrap;}
+  .appicon{
+    width:104px;height:104px;border-radius:26px;overflow:hidden;flex:none;
+    box-shadow:0 18px 46px rgba(40,150,240,.42), 0 0 0 1px rgba(62,200,255,.30);
+  }
+  .appicon img{width:100%;height:100%;object-fit:cover;display:block;transform:scale(1.13);}
+  h1{font-size:52px;font-weight:800;letter-spacing:-.02em;line-height:1.1;}
+  h1 span{color:var(--blue);}
+  .tagline{font-size:19px;color:var(--dim);margin-top:12px;line-height:1.6;max-width:760px;}
+
+  /* ---------- 通用区块标题 ---------- */
+  .sec{margin-top:72px;}
+  .sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:30px;flex-wrap:wrap;}
+  .sec-head .num{
+    font-size:13px;font-weight:800;color:#04121C;background:var(--blue);
+    padding:4px 10px;border-radius:6px;letter-spacing:.06em;
+  }
+  .sec-head h2{font-size:27px;font-weight:700;letter-spacing:-.01em;}
+  .sec-head p{font-size:15px;color:var(--dim2);margin-left:auto;}
+
+  /* ---------- 屏幕组 ---------- */
+  .screens{
+    display:flex;gap:44px;flex-wrap:wrap;justify-content:center;
+    max-width:1720px;margin:0 auto;
+  }
+  .phone-wrap{display:flex;flex-direction:column;align-items:center;gap:20px;}
+  .phone-label{
+    display:flex;align-items:center;gap:10px;font-size:15px;font-weight:600;color:var(--dim);
+    letter-spacing:.02em;
+  }
+  .phone-label b{color:var(--text);font-weight:700;font-size:16px;}
+  .phone-label i{
+    font-style:normal;font-size:11px;font-weight:800;color:#04121C;
+    background:var(--blue);border-radius:5px;padding:2px 7px;
+  }
+
+  .phone{
+    width:390px;height:844px;border-radius:52px;padding:11px;
+    background:linear-gradient(160deg,#2A3140,#0C1219 55%,#222B38);
+    box-shadow:
+      0 46px 90px -20px rgba(0,0,0,.88),
+      0 0 0 1px rgba(255,255,255,.08),
+      inset 0 1px 0 rgba(255,255,255,.10);
+    position:relative;
+  }
+  .screen{
+    width:100%;height:100%;border-radius:42px;overflow:hidden;position:relative;
+    background:var(--bg2);display:flex;flex-direction:column;
+  }
+
+  /* 状态栏 */
+  .statusbar{
+    height:54px;flex:none;display:flex;align-items:center;justify-content:space-between;
+    padding:0 30px 0 34px;font-size:14px;font-weight:600;color:#fff;position:relative;z-index:5;
+  }
+  .sb-right{display:flex;align-items:center;gap:6px;}
+  .sb-batt{width:24px;height:12px;border:1.5px solid rgba(255,255,255,.75);border-radius:3.5px;position:relative;}
+  .sb-batt::after{content:"";position:absolute;right:-4px;top:3.5px;width:2px;height:5px;background:rgba(255,255,255,.75);border-radius:0 2px 2px 0;}
+  .sb-batt i{position:absolute;left:1.5px;top:1.5px;bottom:1.5px;width:72%;background:#fff;border-radius:1.5px;display:block;}
+  .notch{
+    position:absolute;top:11px;left:50%;transform:translateX(-50%);
+    width:118px;height:30px;background:#05070B;border-radius:16px;z-index:9;
+  }
+
+  /* ---------- 屏幕 1 · 陪伴台 ---------- */
+  .s1{background:linear-gradient(175deg,#101826 0%,#070B12 46%,#0A1220 100%);position:relative;flex:1;display:flex;flex-direction:column;}
+  .s1 .glow{
+    position:absolute;top:56px;left:50%;transform:translateX(-50%);
+    width:360px;height:360px;border-radius:50%;
+    background:radial-gradient(circle,rgba(62,200,255,.30),transparent 66%);
+    filter:blur(6px);
+  }
+  .s1-head{padding:14px 26px 0;position:relative;z-index:2;display:flex;justify-content:space-between;align-items:flex-start;}
+  .s1-hi{font-size:26px;font-weight:800;letter-spacing:-.01em;}
+  .s1-date{font-size:13px;color:var(--dim2);margin-top:6px;font-weight:500;}
+  .s1-avatar{
+    width:42px;height:42px;border-radius:14px;overflow:hidden;flex:none;
+    box-shadow:0 0 0 1.5px rgba(62,200,255,.55);
+  }
+  .s1-avatar img{width:100%;height:100%;object-fit:cover;transform:scale(1.15);}
+  .s1-hero{flex:1;display:flex;align-items:center;justify-content:center;position:relative;z-index:2;margin-top:-10px;}
+  .hero-frame{
+    width:286px;height:286px;border-radius:28px;overflow:hidden;
+    box-shadow:0 34px 70px -12px rgba(0,0,0,.92), 0 0 46px -8px rgba(62,200,255,.32), 0 0 0 1px rgba(62,200,255,.20);
+  }
+  .hero-frame img{width:100%;height:100%;object-fit:cover;transform:scale(1.11);}
+  .s1-name{text-align:center;position:relative;z-index:2;}
+  .s1-name h3{font-size:31px;font-weight:800;letter-spacing:-.01em;}
+  .s1-name .mood{
+    display:inline-flex;align-items:center;gap:7px;margin-top:11px;
+    background:rgba(61,220,132,.14);color:var(--green);
+    padding:6px 15px;border-radius:20px;font-size:14px;font-weight:700;
+    border:1px solid rgba(61,220,132,.28);
+  }
+  .s1-name .mood i{width:7px;height:7px;border-radius:50%;background:var(--green);display:block;box-shadow:0 0 8px var(--green);}
+  .s1-stats{display:flex;gap:11px;padding:20px 26px 0;position:relative;z-index:2;}
+  .stat{
+    flex:1;background:rgba(255,255,255,.055);border:1px solid var(--line);
+    border-radius:16px;padding:14px 16px;backdrop-filter:blur(10px);
+  }
+  .stat .k{font-size:12px;color:var(--dim2);font-weight:600;letter-spacing:.02em;}
+  .stat .v{font-size:22px;font-weight:800;margin-top:6px;letter-spacing:-.01em;}
+  .stat .v small{font-size:12px;color:var(--dim);font-weight:600;margin-left:3px;}
+  .bar{height:5px;border-radius:3px;background:rgba(255,255,255,.11);margin-top:9px;overflow:hidden;}
+  .bar i{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,var(--blue2),var(--blue));}
+
+  .s1-cta{margin:22px 26px 0;position:relative;z-index:2;}
+  .btn-primary{
+    width:100%;height:62px;border-radius:22px;border:none;cursor:pointer;
+    background:linear-gradient(135deg,var(--cyan),var(--blue2));
+    color:#04121C;font-size:18px;font-weight:800;letter-spacing:.01em;
+    display:flex;align-items:center;justify-content:center;gap:11px;
+    font-family:inherit;
+    box-shadow:0 16px 36px -8px rgba(62,200,255,.58);
+  }
+  .btn-primary svg{width:21px;height:21px;}
+
+  /* ---------- Tab Bar ---------- */
+  .tabbar{
+    flex:none;padding:8px 12px 16px;display:flex;gap:5px;position:relative;z-index:3;
+  }
+  .tabbar .pill{
+    flex:1;height:62px;background:rgba(255,255,255,.06);
+    border:1px solid var(--line);border-radius:36px;
+    display:flex;align-items:center;justify-content:center;gap:2px;padding:4px;
+  }
+  .tab{
+    flex:1;height:100%;border-radius:26px;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:3px;
+    color:var(--dim2);font-size:10px;font-weight:700;letter-spacing:.06em;
+  }
+  .tab svg{width:19px;height:19px;}
+  .tab.on{background:var(--blue);color:#04121C;box-shadow:0 8px 22px -6px rgba(62,200,255,.65);}
+
+  /* ---------- 屏幕 2 · 对话 ---------- */
+  .s2{flex:1;display:flex;flex-direction:column;background:linear-gradient(180deg,#0F1622,#070B12);}
+  .nav{
+    flex:none;display:flex;align-items:center;gap:13px;padding:8px 22px 16px;
+    border-bottom:1px solid var(--line);
+  }
+  .nav .ava{width:46px;height:46px;border-radius:15px;overflow:hidden;flex:none;box-shadow:0 0 0 1.5px rgba(62,200,255,.5);}
+  .nav .ava img{width:100%;height:100%;object-fit:cover;transform:scale(1.15);}
+  .nav .who h4{font-size:19px;font-weight:800;letter-spacing:-.01em;}
+  .nav .who p{font-size:12.5px;color:var(--green);font-weight:600;margin-top:3px;display:flex;align-items:center;gap:6px;}
+  .nav .who p i{width:6px;height:6px;border-radius:50%;background:var(--green);display:block;}
+  .nav .ico{margin-left:auto;display:flex;gap:16px;color:var(--dim);}
+  .nav .ico svg{width:21px;height:21px;}
+
+  .chat{flex:1;padding:22px 22px 8px;display:flex;flex-direction:column;gap:18px;overflow:hidden;}
+  .msg{display:flex;gap:11px;max-width:88%;}
+  .msg .mini{width:34px;height:34px;border-radius:11px;overflow:hidden;flex:none;}
+  .msg .mini img{width:100%;height:100%;object-fit:cover;transform:scale(1.18);}
+  .bubble{
+    padding:15px 18px;border-radius:20px;font-size:16px;line-height:1.6;font-weight:500;
+  }
+  .msg.eve .bubble{
+    background:linear-gradient(150deg,#1E2836,#161E2A);
+    border:1px solid var(--line);border-top-left-radius:7px;
+    box-shadow:0 10px 24px -10px rgba(0,0,0,.75);
+  }
+  .msg.me{justify-content:flex-end;margin-left:auto;}
+  .msg.me .bubble{
+    background:linear-gradient(135deg,var(--cyan),var(--blue2));color:#04121C;
+    border-top-right-radius:7px;font-weight:600;
+    box-shadow:0 12px 28px -10px rgba(62,200,255,.6);
+  }
+  .typing{display:flex;gap:5px;padding:17px 19px;}
+  .typing i{width:8px;height:8px;border-radius:50%;background:var(--dim);display:block;animation:bl 1.3s infinite;}
+  .typing i:nth-child(2){animation-delay:.2s}
+  .typing i:nth-child(3){animation-delay:.4s}
+  @keyframes bl{0%,60%,100%{opacity:.28;transform:translateY(0)}30%{opacity:1;transform:translateY(-4px)}}
+
+  .quick{display:flex;gap:9px;padding:0 22px 14px;flex-wrap:wrap;}
+  .chip{
+    padding:9px 15px;border-radius:16px;font-size:13.5px;font-weight:600;
+    background:rgba(62,200,255,.12);color:var(--cyan);
+    border:1px solid rgba(62,200,255,.30);
+  }
+  .inputbar{
+    flex:none;margin:0 18px 14px;padding:8px 8px 8px 20px;
+    display:flex;align-items:center;gap:12px;border-radius:26px;
+    background:rgba(255,255,255,.06);border:1px solid var(--line);
+  }
+  .inputbar .ph{flex:1;font-size:15.5px;color:var(--dim2);font-weight:500;}
+  .micbtn{
+    width:48px;height:48px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;
+    background:linear-gradient(135deg,var(--cyan),var(--blue2));
+    box-shadow:0 10px 26px -8px rgba(62,200,255,.72);color:#04121C;
+  }
+  .micbtn svg{width:22px;height:22px;}
+
+  /* ---------- 屏幕 3 · 互动 ---------- */
+  .s3{flex:1;display:flex;flex-direction:column;background:linear-gradient(180deg,#111826,#070B12);}
+  .s3-head{padding:8px 24px 14px;}
+  .s3-head h3{font-size:29px;font-weight:800;letter-spacing:-.02em;}
+  .s3-head p{font-size:13.5px;color:var(--dim2);margin-top:6px;font-weight:500;}
+  .pet-stage{
+    margin:0 24px;border-radius:26px;overflow:hidden;position:relative;height:176px;flex:none;
+    box-shadow:0 24px 52px -16px rgba(0,0,0,.88), 0 0 0 1px rgba(62,200,255,.18);
+  }
+  .pet-stage img{width:100%;height:100%;object-fit:cover;display:block;object-position:50% 38%;transform:scale(1.12);}
+  .pet-stage .ov{
+    position:absolute;inset:0;display:flex;align-items:flex-end;padding:18px;
+    background:linear-gradient(0deg,rgba(5,8,14,.94),transparent 58%);
+  }
+  .pet-stage .ov .cap{
+    background:rgba(16,22,32,.84);border:1px solid rgba(62,200,255,.34);
+    backdrop-filter:blur(12px);border-radius:15px;padding:11px 16px;
+    font-size:14.5px;font-weight:700;color:var(--cyan);
+    display:flex;align-items:center;gap:9px;
+  }
+  .pet-stage .ov .cap i{width:7px;height:7px;border-radius:50%;background:var(--blue);display:block;box-shadow:0 0 10px var(--blue);}
+  .acts{
+    padding:14px 24px 0;display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px;
+  }
+  .act{
+    border-radius:18px;padding:12px 8px;text-align:center;
+    background:rgba(255,255,255,.055);border:1px solid var(--line);
+    display:flex;flex-direction:column;align-items:center;gap:6px;
+  }
+  .act .em{
+    width:40px;height:40px;border-radius:13px;display:flex;align-items:center;justify-content:center;
+    font-size:20px;background:rgba(62,200,255,.14);
+  }
+  .act .lb{font-size:13px;font-weight:700;color:var(--text);}
+  .act .sb{font-size:10px;color:var(--dim2);font-weight:600;}
+  .facial{
+    margin:14px 24px 0;padding:14px;border-radius:20px;
+    background:rgba(255,255,255,.045);border:1px solid var(--line);
+  }
+  .facial .t{font-size:12px;font-weight:800;color:var(--dim);letter-spacing:.05em;margin-bottom:10px;}
+  .faces{display:flex;gap:9px;}
+  .faces .f{
+    flex:1;aspect-ratio:1;border-radius:13px;position:relative;
+    background-image:url(../assets/eve-expressions.png);
+    background-size:220% 220%;background-repeat:no-repeat;
+    filter:brightness(.84) contrast(1.06);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.12), inset 0 0 26px rgba(5,9,16,.62);
+  }
+  .faces .f.a{background-position:4% 4%;}
+  .faces .f.b{background-position:96% 4%;}
+  .faces .f.c{background-position:4% 96%;}
+  .faces .f.d{background-position:96% 96%;}
+
+  /* ---------- 屏幕 4 · 成长 ---------- */
+  .s4{flex:1;display:flex;flex-direction:column;background:linear-gradient(180deg,#0F1622,#06090F);overflow:hidden;}
+  .s4-head{padding:8px 24px 2px;}
+  .s4-head h3{font-size:29px;font-weight:800;letter-spacing:-.02em;}
+  .s4-head p{font-size:13.5px;color:var(--dim2);margin-top:6px;font-weight:500;}
+  .bond{
+    margin:16px 24px 0;padding:17px 20px;border-radius:24px;flex:none;
+    background:linear-gradient(135deg,rgba(62,200,255,.20),rgba(27,111,232,.92)),#071626;
+    border:1px solid rgba(62,200,255,.44);position:relative;overflow:hidden;
+  }
+  .bond::after{
+    content:"";position:absolute;right:-40px;top:-40px;width:160px;height:160px;border-radius:50%;
+    background:radial-gradient(circle,rgba(127,224,255,.34),transparent 68%);
+  }
+  .bond .k{font-size:12.5px;font-weight:700;color:rgba(255,255,255,.84);letter-spacing:.05em;}
+  .bond .big{font-size:47px;font-weight:900;line-height:1.05;margin-top:5px;letter-spacing:-.03em;color:#fff;}
+  .bond .big small{font-size:18px;font-weight:700;color:rgba(255,255,255,.78);margin-left:6px;}
+  .bond .days{font-size:12.5px;font-weight:600;color:rgba(255,255,255,.82);margin-top:7px;}
+  .bond .bar{margin-top:12px;background:rgba(0,0,0,.30);height:6px;}
+  .bond .bar i{background:linear-gradient(90deg,#B9EEFF,#3EC8FF);}
+
+  .s4-sub{font-size:13px;font-weight:800;color:var(--dim);letter-spacing:.05em;margin:18px 24px 9px;}
+  .mem{
+    margin:0 24px 9px;padding:12px 15px;border-radius:18px;flex:none;
+    background:rgba(255,255,255,.055);border:1px solid var(--line);
+    display:flex;align-items:center;gap:13px;
+  }
+  .mem .em{
+    width:40px;height:40px;border-radius:13px;flex:none;display:flex;align-items:center;justify-content:center;
+    font-size:19px;background:rgba(62,200,255,.16);
+  }
+  .mem .tx{flex:1;}
+  .mem .tx h5{font-size:14.5px;font-weight:700;letter-spacing:-.01em;}
+  .mem .tx p{font-size:12px;color:var(--dim2);margin-top:3px;font-weight:500;}
+  .mem .tag{font-size:10.5px;font-weight:800;color:var(--cyan);background:rgba(62,200,255,.16);padding:4px 8px;border-radius:8px;flex:none;}
+
+  .badges{display:flex;gap:11px;margin:0 24px 0;}
+  .badge{
+    flex:1;border-radius:17px;padding:13px 8px;text-align:center;
+    background:rgba(255,255,255,.05);border:1px solid var(--line);
+  }
+  .badge .em{font-size:23px;margin-bottom:6px;}
+  .badge .lb{font-size:11px;font-weight:700;color:var(--dim);line-height:1.3;}
+
+  /* ---------- 设计规范条 ---------- */
+  .spec{
+    max-width:1560px;margin:88px auto 0;padding:44px;
+    border-radius:34px;background:rgba(255,255,255,.035);
+    border:1px solid var(--line);
+    display:grid;grid-template-columns:1.1fr 1fr 1.2fr;gap:52px;
+  }
+  .spec h4{font-size:13px;font-weight:800;color:var(--blue);letter-spacing:.14em;text-transform:uppercase;margin-bottom:22px;}
+  .swatches{display:flex;gap:14px;flex-wrap:wrap;}
+  .sw{width:82px;}
+  .sw .c{height:70px;border-radius:16px;margin-bottom:9px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.14);}
+  .sw .n{font-size:11.5px;font-weight:700;color:var(--text);}
+  .sw .h{font-size:10.5px;color:var(--dim2);font-family:ui-monospace,monospace;margin-top:2px;}
+  .type-row{display:flex;align-items:baseline;gap:16px;margin-bottom:17px;}
+  .type-row .s{font-size:11px;color:var(--dim2);font-family:ui-monospace,monospace;width:80px;flex:none;}
+  .spec ul{list-style:none;display:flex;flex-direction:column;gap:14px;}
+  .spec ul li{font-size:15px;color:var(--dim);line-height:1.65;display:flex;gap:11px;}
+  .spec ul li b{color:var(--text);font-weight:700;}
+  .spec ul li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--blue);flex:none;margin-top:9px;}
+
+  .foot{
+    max-width:1560px;margin:52px auto 0;padding-top:26px;
+    border-top:1px solid var(--line);
+    display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;
+    font-size:13px;color:var(--dim2);font-weight:500;
+  }
+  .foot .dot{display:flex;align-items:center;gap:9px;}
+  .foot .dot i{width:7px;height:7px;border-radius:50%;background:var(--green);display:block;box-shadow:0 0 9px var(--green);}
+</style>
+</head>
+<body>
+
+  <!-- ============ 品牌区 ============ -->
+  <div class="masthead">
+    <div class="kicker">Product Design Spec · v2.0 · EVE</div>
+    <div class="brandrow">
+      <div class="appicon"><img src="../assets/app-icon.png" alt="伊娃 App 图标"></div>
+      <div>
+        <h1>伊娃 · <span>EVE</span> 陪伴</h1>
+        <p class="tagline">一台会飞的白色机器人，住进你的手机。她看得见你、听得懂你、记得住你 —— 不需要 3600 块的零件，一个 App 就够。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 屏幕组 ============ -->
+  <div class="sec">
+    <div class="sec-head">
+      <span class="num">01</span>
+      <h2>核心界面 · 4 屏</h2>
+      <p>390 × 844 · 深空冷调主题</p>
+    </div>
+
+    <div class="screens">
+
+      <!-- ===== 屏幕 1 · 陪伴台 ===== -->
+      <div class="phone-wrap">
+        <div class="phone-label"><i>01</i><b>陪伴台</b> 首页</div>
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen">
+            <div class="statusbar">
+              <span>9:41</span>
+              <div class="sb-right">
+                <svg width="17" height="12" viewBox="0 0 17 12" fill="#fff"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="4.5" y="5.5" width="3" height="6.5" rx="1"/><rect x="9" y="3" width="3" height="9" rx="1"/><rect x="13.5" y="0" width="3" height="12" rx="1"/></svg>
+                <svg width="16" height="12" viewBox="0 0 16 12" fill="#fff"><path d="M8 11.5 5.2 8.4a4.4 4.4 0 0 1 5.6 0L8 11.5Zm0-5.6a7.6 7.6 0 0 0-5.3 2.1L1 6.2a10.4 10.4 0 0 1 14 0l-1.7 1.8A7.6 7.6 0 0 0 8 5.9Z"/></svg>
+                <div class="sb-batt"><i></i></div>
+              </div>
+            </div>
+
+            <div class="s1">
+              <div class="glow"></div>
+              <div class="s1-head">
+                <div>
+                  <div class="s1-hi">下午好，勇哥</div>
+                  <div class="s1-date">10 月 9 日 · 星期五</div>
+                </div>
+                <div class="s1-avatar"><img src="../assets/eve-hero.png" alt=""></div>
+              </div>
+
+              <div class="s1-hero">
+                <div class="hero-frame"><img src="../assets/eve-hero.png" alt="伊娃"></div>
+              </div>
+
+              <div class="s1-name">
+                <h3>伊娃</h3>
+                <div class="mood"><i></i>心情不错 · 想找你聊天</div>
+              </div>
+
+              <div class="s1-stats">
+                <div class="stat">
+                  <div class="k">电量</div>
+                  <div class="v">85<small>%</small></div>
+                  <div class="bar"><i style="width:85%"></i></div>
+                </div>
+                <div class="stat">
+                  <div class="k">亲密度</div>
+                  <div class="v">Lv.3</div>
+                  <div class="bar"><i style="width:62%"></i></div>
+                </div>
+              </div>
+
+              <div class="s1-cta">
+                <button class="btn-primary">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v4"/></svg>
+                  和伊娃说说话
+                </button>
+              </div>
+
+              <div class="tabbar" style="margin-top:auto;">
+                <div class="pill">
+                  <div class="tab on">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
+                    陪伴
+                  </div>
+                  <div class="tab">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L3 21l1.9-6.4A8 8 0 1 1 21 12Z"/></svg>
+                    对话
+                  </div>
+                  <div class="tab">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 14.5a4 4 0 0 0 7 0"/><path d="M9 9.5h.01M15 9.5h.01"/></svg>
+                    玩耍
+                  </div>
+                  <div class="tab">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.4-7-9.5A4.5 4.5 0 0 1 12 8a4.5 4.5 0 0 1 7 3.5C19 16.6 12 21 12 21Z"/></svg>
+                    成长
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== 屏幕 2 · 对话 ===== -->
+      <div class="phone-wrap">
+        <div class="phone-label"><i>02</i><b>对话</b> 语音聊天</div>
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen">
+            <div class="statusbar">
+              <span>9:41</span>
+              <div class="sb-right">
+                <svg width="17" height="12" viewBox="0 0 17 12" fill="#fff"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="4.5" y="5.5" width="3" height="6.5" rx="1"/><rect x="9" y="3" width="3" height="9" rx="1"/><rect x="13.5" y="0" width="3" height="12" rx="1"/></svg>
+                <svg width="16" height="12" viewBox="0 0 16 12" fill="#fff"><path d="M8 11.5 5.2 8.4a4.4 4.4 0 0 1 5.6 0L8 11.5Zm0-5.6a7.6 7.6 0 0 0-5.3 2.1L1 6.2a10.4 10.4 0 0 1 14 0l-1.7 1.8A7.6 7.6 0 0 0 8 5.9Z"/></svg>
+                <div class="sb-batt"><i></i></div>
+              </div>
+            </div>
+
+            <div class="s2">
+              <div class="nav">
+                <div class="ava"><img src="../assets/eve-hero.png" alt=""></div>
+                <div class="who">
+                  <h4>伊娃</h4>
+                  <p><i></i>在线 · 正在听</p>
+                </div>
+                <div class="ico">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1A1.6 1.6 0 0 0 9 19.4a1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1A1.6 1.6 0 0 0 4.6 9a1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H9a1.6 1.6 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V9a1.6 1.6 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1Z"/></svg>
+                </div>
+              </div>
+
+              <div class="chat">
+                <div class="msg eve">
+                  <div class="mini"><img src="../assets/eve-hero.png" alt=""></div>
+                  <div class="bubble">勇哥下午好呀！我记得你昨天说想看恐龙，我找到一个超酷的霸王龙小知识，要听吗？🦖</div>
+                </div>
+
+                <div class="msg me">
+                  <div class="bubble">好啊，说来听听</div>
+                </div>
+
+                <div class="msg eve">
+                  <div class="mini"><img src="../assets/eve-hero.png" alt=""></div>
+                  <div class="bubble">霸王龙的牙齿有香蕉那么大！不过它其实是"慢慢走"的，跑不过你哦～</div>
+                </div>
+
+                <div class="msg eve" style="max-width:64px;">
+                  <div class="mini"><img src="../assets/eve-hero.png" alt=""></div>
+                  <div class="bubble typing" style="padding:17px 19px;"><i></i><i></i><i></i></div>
+                </div>
+              </div>
+
+              <div class="quick">
+                <span class="chip">再讲一个</span>
+                <span class="chip">带我看图</span>
+                <span class="chip">我想玩别的</span>
+              </div>
+
+              <div class="inputbar">
+                <span class="ph">按住说话，或打字给伊娃…</span>
+                <div class="micbtn">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1M12 18v3"/></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== 屏幕 3 · 互动 ===== -->
+      <div class="phone-wrap">
+        <div class="phone-label"><i>03</i><b>互动</b> 动作与表情</div>
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen">
+            <div class="statusbar">
+              <span>9:41</span>
+              <div class="sb-right">
+                <svg width="17" height="12" viewBox="0 0 17 12" fill="#fff"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="4.5" y="5.5" width="3" height="6.5" rx="1"/><rect x="9" y="3" width="3" height="9" rx="1"/><rect x="13.5" y="0" width="3" height="12" rx="1"/></svg>
+                <svg width="16" height="12" viewBox="0 0 16 12" fill="#fff"><path d="M8 11.5 5.2 8.4a4.4 4.4 0 0 1 5.6 0L8 11.5Zm0-5.6a7.6 7.6 0 0 0-5.3 2.1L1 6.2a10.4 10.4 0 0 1 14 0l-1.7 1.8A7.6 7.6 0 0 0 8 5.9Z"/></svg>
+                <div class="sb-batt"><i></i></div>
+              </div>
+            </div>
+
+            <div class="s3">
+              <div class="s3-head">
+                <h3>和伊娃玩耍</h3>
+                <p>点一下，她就会飞过来、会说、会回应你</p>
+              </div>
+
+              <div class="pet-stage">
+                <img src="../assets/eve-room.png" alt="伊娃在房间里">
+                <div class="ov">
+                  <div class="cap"><i></i>伊娃正看着你，等你开口</div>
+                </div>
+              </div>
+
+              <div class="acts">
+                <div class="act">
+                  <div class="em">🤚</div>
+                  <div class="lb">摸摸头</div>
+                  <div class="sb">亲密度 +2</div>
+                </div>
+                <div class="act">
+                  <div class="em">📖</div>
+                  <div class="lb">讲故事</div>
+                  <div class="sb">睡前模式</div>
+                </div>
+                <div class="act">
+                  <div class="em">🎮</div>
+                  <div class="lb">玩游戏</div>
+                  <div class="sb">6 种小游戏</div>
+                </div>
+                <div class="act">
+                  <div class="em">💫</div>
+                  <div class="lb">飞一圈</div>
+                  <div class="sb">悬浮特技</div>
+                </div>
+                <div class="act">
+                  <div class="em">🧩</div>
+                  <div class="lb">猜谜语</div>
+                  <div class="sb">动动小脑筋</div>
+                </div>
+                <div class="act">
+                  <div class="em">🔌</div>
+                  <div class="lb">充电</div>
+                  <div class="sb">电量 85%</div>
+                </div>
+              </div>
+
+              <div class="facial">
+                <div class="t">伊娃的表情</div>
+                <div class="faces">
+                  <div class="f a" title="开心"></div>
+                  <div class="f b" title="好奇"></div>
+                  <div class="f c" title="困了"></div>
+                  <div class="f d" title="兴奋"></div>
+                </div>
+              </div>
+
+              <div class="tabbar" style="margin-top:auto;">
+                <div class="pill">
+                  <div class="tab">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
+                    陪伴
+                  </div>
+                  <div class="tab">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L3 21l1.9-6.4A8 8 0 1 1 21 12Z"/></svg>
+                    对话
+                  </div>
+                  <div class="tab on">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 14.5a4 4 0 0 0 7 0"/><path d="M9 9.5h.01M15 9.5h.01"/></svg>
+                    玩耍
+                  </div>
+                  <div class="tab">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.4-7-9.5A4.5 4.5 0 0 1 12 8a4.5 4.5 0 0 1 7 3.5C19 16.6 12 21 12 21Z"/></svg>
+                    成长
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== 屏幕 4 · 成长 ===== -->
+      <div class="phone-wrap">
+        <div class="phone-label"><i>04</i><b>成长</b> 记忆与亲密度</div>
+        <div class="phone">
+          <div class="notch"></div>
+          <div class="screen">
+            <div class="statusbar">
+              <span>9:41</span>
+              <div class="sb-right">
+                <svg width="17" height="12" viewBox="0 0 17 12" fill="#fff"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="4.5" y="5.5" width="3" height="6.5" rx="1"/><rect x="9" y="3" width="3" height="9" rx="1"/><rect x="13.5" y="0" width="3" height="12" rx="1"/></svg>
+                <svg width="16" height="12" viewBox="0 0 16 12" fill="#fff"><path d="M8 11.5 5.2 8.4a4.4 4.4 0 0 1 5.6 0L8 11.5Zm0-5.6a7.6 7.6 0 0 0-5.3 2.1L1 6.2a10.4 10.4 0 0 1 14 0l-1.7 1.8A7.6 7.6 0 0 0 8 5.9Z"/></svg>
+                <div class="sb-batt"><i></i></div>
+              </div>
+            </div>
+
+            <div class="s4">
+              <div class="s4-head">
+                <h3>我们的成长</h3>
+                <p>伊娃记得和你有关的一切</p>
+              </div>
+
+              <div class="bond">
+                <div class="k">当前亲密度</div>
+                <div class="big">Level 3<small>· 好朋友</small></div>
+                <div class="days">已经陪了你 27 天 · 聊过 386 句话</div>
+                <div class="bar"><i style="width:62%"></i></div>
+              </div>
+
+              <div class="s4-sub">伊娃记得…</div>
+
+              <div class="mem">
+                <div class="em">🦖</div>
+                <div class="tx">
+                  <h5>你最喜欢恐龙</h5>
+                  <p>提过 7 次，最爱霸王龙</p>
+                </div>
+                <div class="tag">长期</div>
+              </div>
+
+              <div class="mem">
+                <div class="em">🌙</div>
+                <div class="tx">
+                  <h5>睡前爱听故事</h5>
+                  <p>通常在 21:00 之后找你</p>
+                </div>
+                <div class="tag">习惯</div>
+              </div>
+
+              <div class="mem">
+                <div class="em">😂</div>
+                <div class="tx">
+                  <h5>笑点很低</h5>
+                  <p>被逗笑过 42 次</p>
+                </div>
+                <div class="tag">画像</div>
+              </div>
+
+              <div class="s4-sub" style="margin-top:14px;">解锁的徽章</div>
+              <div class="badges">
+                <div class="badge"><div class="em">🏅</div><div class="lb">连续陪伴<br>7 天</div></div>
+                <div class="badge"><div class="em">🎙️</div><div class="lb">语音达人<br>100 次</div></div>
+                <div class="badge"><div class="em">🌟</div><div class="lb">好奇心<br>满格</div></div>
+              </div>
+
+              <div class="tabbar" style="margin-top:auto;">
+                <div class="pill">
+                  <div class="tab">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg>
+                    陪伴
+                  </div>
+                  <div class="tab">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L3 21l1.9-6.4A8 8 0 1 1 21 12Z"/></svg>
+                    对话
+                  </div>
+                  <div class="tab">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 14.5a4 4 0 0 0 7 0"/><path d="M9 9.5h.01M15 9.5h.01"/></svg>
+                    玩耍
+                  </div>
+                  <div class="tab on">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.4-7-9.5A4.5 4.5 0 0 1 12 8a4.5 4.5 0 0 1 7 3.5C19 16.6 12 21 12 21Z"/></svg>
+                    成长
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============ 设计规范 ============ -->
+  <div class="spec">
+    <div>
+      <h4>配色 · Palette</h4>
+      <div class="swatches">
+        <div class="sw"><div class="c" style="background:#3EC8FF"></div><div class="n">伊娃蓝</div><div class="h">#3EC8FF</div></div>
+        <div class="sw"><div class="c" style="background:#7FE0FF"></div><div class="n">冰青</div><div class="h">#7FE0FF</div></div>
+        <div class="sw"><div class="c" style="background:#1B6FE8"></div><div class="n">深蓝</div><div class="h">#1B6FE8</div></div>
+        <div class="sw"><div class="c" style="background:#05080E"></div><div class="n">深空底</div><div class="h">#05080E</div></div>
+        <div class="sw"><div class="c" style="background:#1C2533"></div><div class="n">卡片</div><div class="h">#1C2533</div></div>
+        <div class="sw"><div class="c" style="background:#EFF5FB"></div><div class="n">珍珠白</div><div class="h">#EFF5FB</div></div>
+      </div>
+    </div>
+
+    <div>
+      <h4>字体 · Type</h4>
+      <div class="type-row"><span class="s">Display</span><span style="font-size:32px;font-weight:800;letter-spacing:-.02em">伊娃 陪伴</span></div>
+      <div class="type-row"><span class="s">Title</span><span style="font-size:22px;font-weight:700">和伊娃玩耍</span></div>
+      <div class="type-row"><span class="s">Body</span><span style="font-size:16px;font-weight:500;color:var(--dim)">霸王龙的牙齿有香蕉那么大</span></div>
+      <div class="type-row"><span class="s">Caption</span><span style="font-size:13px;font-weight:600;color:var(--dim2)">亲密度 · 电量 · 记忆</span></div>
+    </div>
+
+    <div>
+      <h4>设计要点 · Notes</h4>
+      <ul>
+        <li><b>冷调深空底</b>：改用伊娃的珍珠白 + 冰蓝发光色，深空底衬托机身的干净和眼睛的蓝光，比暖调更"未来伙伴"。</li>
+        <li><b>发光即情绪</b>：伊娃没有嘴，全靠两只圆眼的形状和亮度表达 —— 弯眼是开心、眯眼是困、放大是好奇。</li>
+        <li><b>悬浮感</b>：她的动作不是走，是飘。界面里用蓝光晕和阴影托住角色，强化"浮着"的观感。</li>
+        <li><b>大圆角 + 高对比</b>：卡片 16–26px 圆角，主按钮 62px 高，手指点得到、看得清。</li>
+        <li><b>记忆可视化</b>：把长期记忆做成卡片列表，让孩子看见"伊娃记得我"。</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="foot">
+    <div class="dot"><i></i>设计稿 · 伊娃陪伴 App · 静态页面版 v2.0</div>
+    <div>4 屏核心界面 · 4 张 AI 生成素材 · 1 套设计规范</div>
+  </div>
+
+</body>
+</html>
